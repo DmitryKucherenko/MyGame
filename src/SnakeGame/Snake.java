@@ -14,12 +14,13 @@ public class Snake{
     private Image headImgRed;
   private Image bodyImg;
   private Graphics g;
-  private Snake snake;
+  private boolean eatenApple = false;
+
   private boolean alive = true;
   private DIRECTION direction = DIRECTION.UP;
 
 
-  public Snake(){
+  public Snake(Apple apple){
 
 	  String headResPath ="\\res\\head.png";
 	   String bodyResPath ="\\res\\body.png";
@@ -42,7 +43,7 @@ public class Snake{
   public void move(){
      int x = snakeBody.get(0).getX();
      int y = snakeBody.get(0).getY();
-    // x++;
+
       switch (direction) {
           case UP -> y--;
           case LEFT -> x--;
@@ -52,7 +53,7 @@ public class Snake{
 
      if(x<=Game.getFieldSize() &&x>=0 && y<=Game.getFieldSize()-1 && y>=0) {
          snakeBody.add(0, new GameObj(x, y));
-         removeTail();
+         if(!eatenApple)  removeTail();else eatenApple = false;
      } else alive = false;
 
 
@@ -89,6 +90,19 @@ public class Snake{
 
     public DIRECTION getDirection(){
       return direction;
+    }
+
+    public GameObj getGameObj(){
+      return snakeBody.get(0);
+    }
+
+    public void eat(Apple apple){
+
+        if(getGameObj().equals(apple.getGameObj())){
+            apple.eat();
+            eatenApple = true;
+        }
+
     }
 }
 

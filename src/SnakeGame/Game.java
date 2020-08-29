@@ -8,12 +8,15 @@ import java.net.URL;
 
 public class Game{
 	private static final int FIELD_SIZE=10;
-	private static Snake snake;
+
 	public static void main(String[] args) throws InterruptedException {
 
          JFrame mainWindow = new MainWidown();
-		 snake = new Snake();
-         Field field = new Field(FIELD_SIZE, snake);
+
+		 Apple apple = new Apple();
+		 Snake snake = new Snake(apple);
+
+         Field field = new Field(FIELD_SIZE, snake,apple);
          mainWindow.addKeyListener(new KeyAdapter() {
 			 @Override
 			 public void keyPressed(KeyEvent e) {
@@ -29,8 +32,11 @@ public class Game{
          mainWindow.setVisible(true);
 		while(snake.isAlive()){
 			Thread.sleep(1000);
+
 			snake.move();
+			snake.eat(apple);
 			field.repaint();
+			if(apple.isEaten())apple = new Apple();
 		}
 	}
 
@@ -73,13 +79,14 @@ class Field extends JComponent{
 	private static Snake snake;
     private static Apple apple;
 
-	public Field(int fieldSize, Snake snake){
+	public Field(int fieldSize, Snake snake, Apple apple){
 	  String tileResPath = "\\res\\tile.png";
 	  this.snake = snake;
+	  this.apple = apple;
       URL tileUrl = getClass().getResource(tileResPath);
 	  this.fieldSize = fieldSize;
 	  tileImg = new ImageIcon(tileUrl).getImage();
-	  apple = new Apple();
+
 	  setVisible(true);
 	}
 
@@ -91,7 +98,8 @@ class Field extends JComponent{
 	    for(int j=0;j<fieldSize;j++)
 	    g.drawImage(tileImg,j*imageWidth,i*imageHeight,null);
 	    snake.draw(g);
-	    apple.draw(g);
+	    if(!apple.isEaten())apple.draw(g);
+
 	}
 
 
