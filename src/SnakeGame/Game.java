@@ -21,10 +21,10 @@ public class Game{
 			 @Override
 			 public void keyPressed(KeyEvent e) {
 				 switch (e.getKeyCode()) {
-					 case KeyEvent.VK_RIGHT -> snake.setDirection(DIRECTION.RIGHT);
-					 case KeyEvent.VK_LEFT -> snake.setDirection(DIRECTION.LEFT);
-					 case KeyEvent.VK_UP -> snake.setDirection(DIRECTION.UP);
-					 case KeyEvent.VK_DOWN -> snake.setDirection(DIRECTION.DOWN);
+					 case KeyEvent.VK_RIGHT: if(snake.getDirection()!=DIRECTION.LEFT)snake.setDirection(DIRECTION.RIGHT);break;
+					 case KeyEvent.VK_LEFT: if(snake.getDirection()!=DIRECTION.RIGHT) snake.setDirection(DIRECTION.LEFT);break;
+					 case KeyEvent.VK_UP :if(snake.getDirection()!=DIRECTION.DOWN) snake.setDirection(DIRECTION.UP);break;
+					 case KeyEvent.VK_DOWN: if(snake.getDirection()!=DIRECTION.UP)snake.setDirection(DIRECTION.DOWN);break;
 				 }
 		 }});
          mainWindow.add(field);

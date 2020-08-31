@@ -87,10 +87,8 @@ public class Snake{
     public void setDirection(DIRECTION direction) {
         this.direction = direction;
     }
+    public DIRECTION getDirection(){return direction;}
 
-    public DIRECTION getDirection(){
-      return direction;
-    }
 
     public GameObj getGameObj(){
       return snakeBody.get(0);
