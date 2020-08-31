@@ -20,7 +20,7 @@ public class Snake{
   private DIRECTION direction = DIRECTION.UP;
 
 
-  public Snake(Apple apple){
+  public Snake(){
 
 	  String headResPath ="\\res\\head.png";
 	   String bodyResPath ="\\res\\body.png";
@@ -51,7 +51,7 @@ public class Snake{
           case RIGHT -> x++;
       }
 
-     if(x<=Game.getFieldSize() &&x>=0 && y<=Game.getFieldSize()-1 && y>=0) {
+     if(x<=Game.getFieldSize()-1 &&x>=0 && y<=Game.getFieldSize()-1 && y>=0) {
          snakeBody.add(0, new GameObj(x, y));
          if(!eatenApple)  removeTail();else eatenApple = false;
      } else alive = false;

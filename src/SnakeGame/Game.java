@@ -8,13 +8,14 @@ import java.net.URL;
 
 public class Game{
 	private static final int FIELD_SIZE=10;
+	private static int score = 0;
 
 	public static void main(String[] args) throws InterruptedException {
 
          JFrame mainWindow = new MainWidown();
 
 		 Apple apple = new Apple();
-		 Snake snake = new Snake(apple);
+		 Snake snake = new Snake();
 
          Field field = new Field(FIELD_SIZE, snake,apple);
          mainWindow.addKeyListener(new KeyAdapter() {
@@ -33,10 +34,16 @@ public class Game{
 		while(snake.isAlive()){
 			Thread.sleep(1000);
 
+
 			snake.move();
 			snake.eat(apple);
+			if(apple.isEaten()){
+				apple.getNewApple();;
+				score=score+10;
+			}
 			field.repaint();
-			if(apple.isEaten())apple = new Apple();
+
+
 		}
 	}
 
@@ -44,11 +51,15 @@ public class Game{
 	  return FIELD_SIZE;
 	}
 
+	public static int getScore(){
+		return score;
+	}
+
 }
 
 class MainWidown extends JFrame{
 	private static final int DEFAULT_HEIGTH = 550;
-	private static final int DEFAULT_WIDTH = 550;
+	private static final int DEFAULT_WIDTH = 600;
 
   public MainWidown(){
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,6 +75,7 @@ class MainWidown extends JFrame{
     int screenWidth = screenSize.width;
     setLocation(screenWidth/2-DEFAULT_WIDTH/2,screenHeigth/2-DEFAULT_HEIGTH/2);
   }
+
 
   public Dimension getPreferredSize(){
   	  return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGTH);
@@ -99,6 +111,14 @@ class Field extends JComponent{
 	    g.drawImage(tileImg,j*imageWidth,i*imageHeight,null);
 	    snake.draw(g);
 	    if(!apple.isEaten())apple.draw(g);
+	    g.setColor(Color.RED);
+		g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+		g.drawString("Score:"+Game.getScore(),imageWidth*fieldSize,20);
+		if(!snake.isAlive()){
+			g.setFont(new Font("TimesRoman", Font.BOLD, 50));
+			g.drawString("GAME OVER",imageWidth*fieldSize/2,imageHeight*fieldSize/2);
+		}
+
 
 	}
 

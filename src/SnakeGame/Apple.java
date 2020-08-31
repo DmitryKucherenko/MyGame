@@ -36,7 +36,7 @@ public class Apple{
 
 			public void eat(){
 		       eaten = true;
-				getNewApple();
+
 			}
 
 			public GameObj getGameObj(){
