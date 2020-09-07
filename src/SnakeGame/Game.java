@@ -9,15 +9,19 @@ import java.net.URL;
 public class Game{
 	private static final int FIELD_SIZE=10;
 	private static int score = 0;
+	private static Apple apple;
+	private static Snake snake;
+	private static Field field;
 
-	public static void main(String[] args) throws InterruptedException {
+
+
+	public static void main(String[] args) {
 
          JFrame mainWindow = new MainWidown();
 
-		 Apple apple = new Apple();
-		 Snake snake = new Snake();
-
-         Field field = new Field(FIELD_SIZE, snake,apple);
+		apple = new Apple();
+		snake = new Snake();
+		field = new Field(FIELD_SIZE, snake,apple);
          mainWindow.addKeyListener(new KeyAdapter() {
 			 @Override
 			 public void keyPressed(KeyEvent e) {
@@ -26,13 +30,19 @@ public class Game{
 					 case KeyEvent.VK_LEFT: if(snake.getDirection()!=DIRECTION.RIGHT) snake.setDirection(DIRECTION.LEFT);break;
 					 case KeyEvent.VK_UP :if(snake.getDirection()!=DIRECTION.DOWN) snake.setDirection(DIRECTION.UP);break;
 					 case KeyEvent.VK_DOWN: if(snake.getDirection()!=DIRECTION.UP)snake.setDirection(DIRECTION.DOWN);break;
+
 				 }
 		 }});
          mainWindow.add(field);
 	     mainWindow.pack();
          mainWindow.setVisible(true);
+
 		while(snake.isAlive()){
-			Thread.sleep(1000);
+			try {
+				Thread.sleep(1000);
+			}catch (InterruptedException e){
+				e.printStackTrace();
+			}
 
 
 			snake.move();
@@ -45,7 +55,10 @@ public class Game{
 
 
 		}
+
 	}
+
+
 
 	public static int getFieldSize(){
 	  return FIELD_SIZE;
@@ -92,10 +105,9 @@ class Field extends JComponent{
     private static Apple apple;
 
 	public Field(int fieldSize, Snake snake, Apple apple){
-	  String tileResPath = "\\res\\tile.png";
 	  this.snake = snake;
 	  this.apple = apple;
-      URL tileUrl = getClass().getResource(tileResPath);
+      URL tileUrl = getClass().getResource("\\res\\tile.png");
 	  this.fieldSize = fieldSize;
 	  tileImg = new ImageIcon(tileUrl).getImage();
 

@@ -11,7 +11,8 @@ import java.net.URL;
 public class Snake{
   private java.util.List<GameObj> snakeBody = new ArrayList<>();
   private Image headImg;
-    private Image headImgRed;
+  private Image headImgRed;
+  private Image bodyRedImg;
   private Image bodyImg;
   private Graphics g;
   private boolean eatenApple = false;
@@ -24,16 +25,18 @@ public class Snake{
 
 	  String headResPath ="\\res\\head.png";
 	   String bodyResPath ="\\res\\body.png";
+      String bodyRedResPath ="\\res\\body_red.png";
 	   String headRedResPath ="\\res\\head_red.png";
 	  URL headUrl = getClass().getResource(headResPath);
 	  URL headRedUrl = getClass().getResource(headRedResPath);
       URL bodyUrl = getClass().getResource(bodyResPath);
+      URL bodyRedUrl = getClass().getResource(bodyRedResPath);
 
 
 	  headImg = new ImageIcon(headUrl).getImage();
       headImgRed=new ImageIcon(headRedUrl).getImage();
       bodyImg = new ImageIcon(bodyUrl).getImage();
-
+      bodyRedImg = new ImageIcon(bodyRedUrl).getImage();
 	  snakeBody.add(new GameObj(5,5));
 	  snakeBody.add(new GameObj(5,6));
 	  snakeBody.add(new GameObj(5,7));
@@ -52,6 +55,9 @@ public class Snake{
       }
 
      if(x<=Game.getFieldSize()-1 &&x>=0 && y<=Game.getFieldSize()-1 && y>=0) {
+         for (int i = 1; i < snakeBody.size(); i++) {
+             if(snakeBody.get(i).getX()==x && snakeBody.get(i).getY()==y){ alive=false;return;}
+         }
          snakeBody.add(0, new GameObj(x, y));
          if(!eatenApple)  removeTail();else eatenApple = false;
      } else alive = false;
@@ -75,11 +81,13 @@ public class Snake{
 	 	    int imageHeight = headImg.getHeight(null);
 
 	 	    for(int i=0; i<snakeBody.size();i++){
-	 	    if(i==0) { if(!isAlive())headImg = headImgRed;
+	 	    if(i==0) { if(!isAlive())headImg = headImgRed;else headImg = headImg;
 	 	        g.drawImage(headImg,snakeBody.get(i).getX()*imageWidth,snakeBody.get(i).getY()*imageHeight,null);
 
-            }else
-	 	    g.drawImage(bodyImg,snakeBody.get(i).getX()*imageWidth,snakeBody.get(i).getY()*imageHeight,null);
+            }else {
+                if(!isAlive())bodyImg = bodyRedImg;else  bodyImg = bodyImg;
+                g.drawImage(bodyImg, snakeBody.get(i).getX() * imageWidth, snakeBody.get(i).getY() * imageHeight, null);
+            }
 
 		    }
   }
